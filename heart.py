@@ -1,3 +1,4 @@
+#!/usr/bin/python
 __author__ = 'gang'
 
 import math
@@ -12,7 +13,7 @@ def fun2(x):
     y = math.acos(1 - abs(x)) - math.pi
     return  y
 
-w, h = 1000, 800
+w, h = 640, 480
 screen = pygame.display.set_mode((w,h), 0, 32)
 screen.fill((255, 255, 255))
 
@@ -26,15 +27,25 @@ def draw_point(x, y):
     pygame.draw.circle(screen, (255, 0, 255), (x , y), 1)
 
 
-l = range(-200, 200)
-def xfun():
-    for x in l:
-        point.append((x + x0, int(0 - fun1(x / 100.)*100) + y0))
-    for x in l[-1:1:-1]:
-        point.append((x + x0, int(0 - fun2(x / 100.)*100) + y0))
+def get_range(x):
+	x_range = []
+	s = 2. / x
+	for x in range(2*x):
+		v = -2 + x * s
+		x_range.append(v)
+	return x_range
 
 
-xfun()
+def get_heart_points(r):
+	r = r / 2
+	l = get_range(r)
+	for x in l:
+		point.append((x*r + x0, int(0 - fun1(x)*r) + y0))
+	for x in l[-1:1:-1]:
+		point.append((x*r + x0, int(0 - fun2(x)*r) + y0))
+
+
+get_heart_points(200)
 
 pygame.draw.polygon(screen,(255,100,100),point)
 #for x in point:
